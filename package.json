@@ -1,0 +1,30 @@
+{
+  "name": "videos-espiritas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run scrap",
+    "scrap": "DEBUG=scrap node --max-old-space-size=9999 scrap.js || sleep 10",
+    "metadata": "YOUTUBE_API_KEY=AIzaSyBdGP9exCgwyxKuqsudystC4HlkaoWnBcI DEBUG=metadata node metadata.js || sleep 10",
+    "page": "node page.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^2.10.0",
+    "buffer-crc32": "^0.2.5",
+    "cheerio": "^0.19.0",
+    "debug": "^2.2.0",
+    "extend": "^3.0.0",
+    "forever": "^0.15.1",
+    "progress": "^1.1.8",
+    "sanitize-filename": "^1.4.3",
+    "superagent": "^1.4.0",
+    "superagent-cache": "^1.0.2",
+    "superagent-promise": "^1.0.3",
+    "tingodb": "^0.4.1",
+    "video-url-normalizer": "^1.0.0"
+  }
+}
