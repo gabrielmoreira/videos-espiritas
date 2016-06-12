@@ -8,6 +8,7 @@
     "scrap": "DEBUG=scrap node --max-old-space-size=9999 scrap.js || sleep 10",
     "metadata": "YOUTUBE_API_KEY=AIzaSyBdGP9exCgwyxKuqsudystC4HlkaoWnBcI DEBUG=metadata node metadata.js || sleep 10",
     "page": "node page.js",
+    "dev": "http-server ./page",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -26,5 +27,8 @@
     "superagent-promise": "^1.0.3",
     "tingodb": "^0.4.1",
     "video-url-normalizer": "^1.0.0"
+  },
+  "devDependencies": {
+    "http-server": "^0.9.0"
   }
 }

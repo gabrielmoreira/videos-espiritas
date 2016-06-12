@@ -1,0 +1,237 @@
+<html>
+<head>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+   <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+   <style>
+   div.dataTables_wrapper div.dataTables_filter input {
+    margin-left: 0.5em;
+    display: inline-block;
+    width: auto;}
+      .page.page-inactive {
+      display: none;
+      }
+
+      .page {
+      -webkit-pointer-events: none;
+      pointer-events: none;
+
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+
+      z-index: 2000;
+      position: fixed;
+      height: 60px;
+      width: 100px;
+      margin: auto;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      }
+
+      .page .page-progress {
+      z-index: 2000;
+      position: absolute;
+      height: 60px;
+      width: 100px;
+
+      -webkit-transform: translate3d(0, 0, 0) !important;
+      -ms-transform: translate3d(0, 0, 0) !important;
+      transform: translate3d(0, 0, 0) !important;
+      }
+
+      .page .page-progress:before {
+      content: attr(data-progress-text);
+      text-align: center;
+      color: #fff;
+      background: #29d;
+      border-radius: 50%;
+      font-family: "Helvetica Neue", sans-serif;
+      font-size: 14px;
+      font-weight: 100;
+      line-height: 1;
+      padding: 20% 0 7px;
+      width: 50%;
+      height: 40%;
+      margin: 10px 0 0 30px;
+      display: block;
+      z-index: 999;
+      position: absolute;
+      }
+
+      .page .page-activity {
+      font-size: 15px;
+      line-height: 1;
+      z-index: 2000;
+      position: absolute;
+      height: 60px;
+      width: 100px;
+
+      display: block;
+      -webkit-animation: page-theme-center-atom-spin 2s linear infinite;
+      -moz-animation: page-theme-center-atom-spin 2s linear infinite;
+      -o-animation: page-theme-center-atom-spin 2s linear infinite;
+      animation: page-theme-center-atom-spin 2s linear infinite;
+      }
+
+      .page .page-activity {
+      border-radius: 50%;
+      border: 5px solid #29d;
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 60px;
+      width: 100px;
+      }
+
+      .page .page-activity:after {
+      border-radius: 50%;
+      border: 5px solid #29d;
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      height: 60px;
+      width: 100px;
+
+      -webkit-transform: rotate(60deg);
+      -moz-transform: rotate(60deg);
+      -o-transform: rotate(60deg);
+      transform: rotate(60deg);
+      }
+
+      .page .page-activity:before {
+      border-radius: 50%;
+      border: 5px solid #29d;
+      content: ' ';
+      display: block;
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      height: 60px;
+      width: 100px;
+
+      -webkit-transform: rotate(120deg);
+      -moz-transform: rotate(120deg);
+      -o-transform: rotate(120deg);
+      transform: rotate(120deg);
+      }
+
+      @-webkit-keyframes page-theme-center-atom-spin {
+      0%   { -webkit-transform: rotate(0deg) }
+      100% { -webkit-transform: rotate(359deg) }
+      }
+      @-moz-keyframes page-theme-center-atom-spin {
+      0%   { -moz-transform: rotate(0deg) }
+      100% { -moz-transform: rotate(359deg) }
+      }
+      @-o-keyframes page-theme-center-atom-spin {
+      0%   { -o-transform: rotate(0deg) }
+      100% { -o-transform: rotate(359deg) }
+      }
+      @keyframes page-theme-center-atom-spin {
+      0%   { transform: rotate(0deg) }
+      100% { transform: rotate(359deg) }
+      }
+   </style>
+</head>
+<body>
+   <div class="page" id="pageLoader">
+      <div class="page-activity"></div>
+   </div>
+   <div style="padding: 8px">
+      <table id="videos" width="100%" style='display: none' class="table table-striped table-bordered">
+         <thead>
+            <tr>
+               <th width="4%">#</th>
+               <th width="80%">Palestra</th>
+               <th width="13%">Visualizações</th>
+               <th width="13%">Duração</th>
+            </tr>
+         </thead>
+         <tbody>
+         </tbody>
+      </table>
+   </div>
+   <script type="text/javascript" language="javascript" src="./videos.js"></script>
+   <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+   <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+   <script>
+
+      function renderPalestra(data, type, full, meta) {
+         var tokens = (full.id || "").split('-', 2);
+         var type = tokens[0];
+         var id = tokens[1];
+         var img = "";
+         switch(type) {
+            case 'youtube':
+               img = "<img src='http://img.youtube.com/vi/" + id + "/default.jpg' width='120' height='90' style='float: left; margin-right: 8'>";
+               break;
+            case 'dailymotion':
+                img = "<img src='http://www.dailymotion.com/thumbnail/video/" + id + "' width='120' height='90' style='float: left; margin-right: 8'>";
+               break;
+         }
+         return "<a target=\"_blank\" href=\"" + full.frameUrl + "\">" + data + "</a><br>" + img + "<span>" +full.description + "</span>";
+      }
+
+      function renderDuracao(data, type, full, meta) {
+         var hrs = "";
+         var mins = Math.floor(data / 60);
+         if (mins > 59) {
+            hrs = Math.floor(mins / 60);
+            mins = ("00" + (mins % 60)).slice(-2);
+            hrs += "h ";
+         }
+         return hrs + mins + "m";
+      }
+
+      $('#videos').on( 'init.dt', function() {
+         $('#pageLoader').hide();
+         $(this).show();
+      }).DataTable({
+         "language": {
+            "url": "http://cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json"
+         },
+         "paging": false,
+         "order": [[ 2, 'desc' ], [ 3, 'asc' ]],
+         "data": Videos.map(function(item, i) { item.i = i + 1; return item; }),
+          "columns": [
+              { "data": "i"},
+              { "data": "title", render: renderPalestra },
+              { "data": "views"},
+              { "data": "duracao", render: renderDuracao }
+          ]
+      });
+      /*
+         {
+   "page": "http://www.redeamigoespirita.com.br/video/sintomas-da-mediunidade-yasmin-madeira",
+   "title": "Sintomas da Mediunidade - Yasmin Madeira",
+   "shortDescription": "♦ Curta nossa página! https://www.facebook.com/tvnovaluz ♦ Este vídeo é uma produção do Clube de Ar…",
+   "views": 4,
+   "frameUrl": "https://www.youtube.com/embed/S0gAnuwU0w4?feature=oembed&ampx-wmode=opaque",
+   "description": "♦ Curta nossa página! https://www.facebook.com/tvnovaluz ♦ Este vídeo é uma produção do Clube de Arte http://www.clubedearte.org/site/ http://www.facebook.co...",
+   "id": "youtube-S0gAnuwU0w4",
+   "tipo": "youtube",
+   "page_views": 4,
+   "duracao": 3356
+},
+{
+   "page": "http://www.redeamigoespirita.com.br/video/as-dores-do-mundo-jos-carlos-leal",
+   "title": "As Dores do Mundo - José Carlos Leal",
+   "shortDescription": "Yasmin Madeira realiza entrevista com o escritor e expositor espírita José Carlos Leal sobre o tema…",
+   "views": 5,
+   "frameUrl": "https://www.youtube.com/embed/xLvhaO1MUvQ?feature=oembed&ampx-wmode=opaque",
+   "description": "Yasmin Madeira realiza entrevista com o escritor e expositor espírita José Carlos Leal sobre o tema \"As Dores do Mundo\" no programa Despertar Espírita. Produ...",
+   "id": "youtube-xLvhaO1MUvQ",
+   "tipo": "youtube",
+   "page_views": 5,
+   "duracao": 3156
+},
+       */
+   </script>
+</body>
+</html>

@@ -13,10 +13,10 @@ videos = videos.filter(function(video) {
    return (video.duracao >= config.duracaoMinima
       && video.duracao <= config.duracaoMaxima);
 }).sort(function(a, b) {
-   return ((a.views || a.page_views) * 10000 + a.duracao)
-   - ((b.views || b.page_views) * 10000 + b.duracao);
+   return ((b.views || b.page_views) * 10000 + b.duracao)
+   - ((a.views || a.page_views) * 10000 + a.duracao);
 });
 
-var js = "var Videos = [" + JSON.stringify(videos, null, '\t') + '];';
+var js = "var Videos = " + JSON.stringify(videos, null, '\t') + ';';
 fs.writeFileSync(config.arquivo, js);
 console.log(`Arquivo ${config.arquivo} gerado com ${videos.length} de ${count}`);
